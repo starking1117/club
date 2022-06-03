@@ -1,9 +1,61 @@
 from django.db import models
+from django import forms
+from django.contrib.auth.models import User
+import pyexcel
 
-# Create your models here.
-class Student(models.Model):
-    studata = models.TextField('學生資料', help_text='依 班級,座號,學號,身分證字號,姓名 順序由 Excel 貼上學生基本資料')
+class FormItem(models.Model):
+    GRADE_OPTIONS = [
+    (0, '高一'),
+    (1, '高二'),
+    ]
+    CLASS_OPTIONS = [
+    (0, '1'),
+    (1, '2'),
+    (2, '3'),
+    (3, '4'),
+    (4, '5'),
+    (5, '6'),
+    (6, '7'),
+    (7, '8'),
+    (8, '9'),
+    (9, '10'),
+    ] 
+    CLUB_OPTIONS = [
+    (0, '資訊社'), 
+    (1, '籃球社'), 
+    (2, '羽球社'),
+    (3, '桌遊社'),
+    (4, '吉他社'),
+    ]
+    stu_name = models.CharField('學生姓名', max_length=8)
+    stu_grade = models.IntegerField(
+            '年級', 
+            default=0, 
+            choices=GRADE_OPTIONS
+           )
+    #學生班級
+    stu_class = models.IntegerField(
+            '學生班級', 
+            default=0, 
+            choices=CLASS_OPTIONS
+           )
+    stu_num = models.CharField('座號', max_length=8)
+    ori_club = models.IntegerField(
+            '原社團', 
+            default=0, 
+            choices=CLUB_OPTIONS 
+    )
+    new_club = models.IntegerField(
+            '欲轉社社團', 
+            default=0, 
+            choices=CLUB_OPTIONS 
+    )
+    Yes_or_No = models.BooleanField('同意轉社',default=False)
+    note = models.CharField('備註',max_length=255,null= True,blank= True)
 
-class LogItem(models.Model):
-    student = models.CharField('',max_length=255)
 
+class ClubItem(models.Model):
+    director = models.CharField('社長', max_length=8)
+    teacher = models.CharField('指導老師', max_length=8)
+    now_num = models.CharField('目前人數',max_length=8)
+    max_num = models.CharField('上限人數',max_length=8)
