@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>社團名稱</th>
+      <th>社長</th>
+      <th>指導老師</th>
+      <th>目前人數</th>
+      <th>上線人數 <th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in clubitem_list %}
+    <tr>
+      <td>
+      <a href="{{ item.id }}">{{ item.club_name }}</a>
+      </td>
+      <td>{{ item.director }}</td>
+      <td>{{ item.teacher }}</td>
+      <td>{{ item.now_num }}</td>
+      <td>{{ item.max_num }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

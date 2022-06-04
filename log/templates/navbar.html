@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light mb-4 shadow-sm">
+  <!-- 網站標誌 -->
+  <div class="navbar-brand">
+    <i class="fa fa-refresh"></i> 線上轉社系統
+  </div>
+  <!-- 在小螢幕的設備上顯示可展開/收合導覽選單的按鈕 -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- 導覽列選單內容(可收合) -->
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto nav-pills">
+      <li class="nav-item">
+        <a href="{% url 'club_list' %}" class="nav-link">
+          <i class="fas fa-list-alt"></i> 社團清單
+        </a>
+      </li>           
+      <li class="nav-item">
+      {% if user.is_authenticated %}
+        {% if perms.log.add_clubitem %}
+        <li class="nav-item">
+        <a href="{% url 'club_create' %}" class="nav-link">
+          <i class="fas fa-edit"></i> 創社團資料
+        </a>
+        </li>
+        <a href="{% url 'logout' %}" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i> 登出{{ user.username }}
+        </a>
+        {% elif perms.log.add_formitem %}
+        <li class="nav-item">
+        <a href="{% url 'form_create' %}" class="nav-link">
+          <i class="fas fa-edit"></i> 我要轉社
+        </a>
+        </li>
+        <a href="{% url 'logout' %}" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i> 登出{{ user.username }}
+        </a>
+        {% elif perms.log.change_formitem %}
+        <li class="nav-item">
+        <a href="{% url 'form_reply' %}" class="nav-link">
+          <i class="fas fa-edit"></i> 欲轉社申請列表
+        </a>
+        </li>
+        <a href="{% url 'logout' %}" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i> 登出{{ user.username }}
+        </a>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'login' %}" class="nav-link">
+          <i class="fas fa-sign-in-alt"></i> 登入
+        </a>
+      {% endif %}
+      </li>
+    </ul>
+  </div>
+</nav>

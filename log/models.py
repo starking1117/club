@@ -1,7 +1,4 @@
 from django.db import models
-from django import forms
-from django.contrib.auth.models import User
-import pyexcel
 
 class FormItem(models.Model):
     GRADE_OPTIONS = [
@@ -27,7 +24,7 @@ class FormItem(models.Model):
     (3, '桌遊社'),
     (4, '吉他社'),
     ]
-    stu_name = models.CharField('學生姓名', max_length=8)
+    stu_name = models.CharField('學生姓名', max_length=8,default='')
     stu_grade = models.IntegerField(
             '年級', 
             default=0, 
@@ -39,7 +36,7 @@ class FormItem(models.Model):
             default=0, 
             choices=CLASS_OPTIONS
            )
-    stu_num = models.CharField('座號', max_length=8)
+    stu_num = models.CharField('座號', max_length=8,default='')
     ori_club = models.IntegerField(
             '原社團', 
             default=0, 
@@ -55,7 +52,8 @@ class FormItem(models.Model):
 
 
 class ClubItem(models.Model):
-    director = models.CharField('社長', max_length=8)
-    teacher = models.CharField('指導老師', max_length=8)
-    now_num = models.CharField('目前人數',max_length=8)
-    max_num = models.CharField('上限人數',max_length=8)
+    club_name = models.CharField('社團名稱',max_length=8,default='')
+    director = models.CharField('社長', max_length=8,default='')
+    teacher = models.CharField('指導老師', max_length=8,default='')
+    now_num = models.CharField('目前人數',max_length=8,default='')
+    max_num = models.CharField('上限人數',max_length=8,default='')
