@@ -14,16 +14,4 @@
     <small title="報修人"><i class="fas fa-user"></i> {{ clubitem.director }} <i class="fas fa-user"></i> {{ clubitem.teacher }}</small>
   </div>
 </div>
-<hr>
-<div class="card mt-3">
-  <div class="card-header d-flex justify-content-between">
-    <div class="h3">申請轉社列表</div>
-    <div>{{ logitem.get_status_display }}</div>
-  </div>
-  <div class="card-body">{{ logitem.comment|linebreaks }}</div>
-  <div class="card-footer card-text d-flex justify-content-between text-muted">
-    <small title="處理人員"><i class="fas fa-user-md"></i> {{ logitem.handler }}</small>
-    <small><i class="far fa-clock"></i> {{ logitem.handle_date }}</small>
-  </div>
-</div>
 {% endblock %}

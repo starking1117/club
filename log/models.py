@@ -24,6 +24,11 @@ class FormItem(models.Model):
     (3, '桌遊社'),
     (4, '吉他社'),
     ]
+    Y_or_N_OPTIONS = [
+    (0, '未答覆'), 
+    (1, '同意'),
+    (2, '不同意'), 
+    ]
     stu_name = models.CharField('學生姓名', max_length=8,default='')
     stu_grade = models.IntegerField(
             '年級', 
@@ -47,13 +52,37 @@ class FormItem(models.Model):
             default=0, 
             choices=CLUB_OPTIONS 
     )
-    Yes_or_No = models.BooleanField('同意轉社',default=False)
+    Yes_or_No_od = models.IntegerField(
+            '原社團社長', 
+            default=0, 
+            choices=Y_or_N_OPTIONS
+           )
+    Yes_or_No_ot = models.IntegerField(
+            '原社團指導老師', 
+            default=0, 
+            choices=Y_or_N_OPTIONS
+           )
+    Yes_or_No_nd = models.IntegerField(
+            '新社團社長', 
+            default=0, 
+            choices=Y_or_N_OPTIONS
+           )
+    Yes_or_No_nt = models.IntegerField(
+            '新社團指導老師', 
+            default=0, 
+            choices=Y_or_N_OPTIONS
+           )
+    Yes_or_No_final = models.IntegerField(
+            '教務處審核', 
+            default=0, 
+            choices=Y_or_N_OPTIONS
+           )
     note = models.CharField('備註',max_length=255,null= True,blank= True)
 
 
 class ClubItem(models.Model):
     club_name = models.CharField('社團名稱',max_length=8,default='')
-    director = models.CharField('社長', max_length=8,default='')
+    director = models.CharField('社團社長', max_length=8,default='')
     teacher = models.CharField('指導老師', max_length=8,default='')
     now_num = models.CharField('目前人數',max_length=8,default='')
     max_num = models.CharField('上限人數',max_length=8,default='')

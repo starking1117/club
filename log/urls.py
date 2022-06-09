@@ -3,7 +3,9 @@ from .views import *
 
 urlpatterns = [
     path('', ClubList.as_view(), name='club_list'),
+    path('form/',FormList.as_view(),name='form_list'),
     path('<int:pk>/', ClubView.as_view(), name='club_view'),
+    path('form/<int:pk>/', FormView.as_view(), name='form_view'),
     path('club_create/',ClubCreate.as_view(),name='club_create'),
     path('form_create/', FormCreate.as_view(), name='form_create'),
     path('<int:pk>/reply/', FormReply.as_view(), name='form_reply'),

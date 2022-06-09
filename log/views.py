@@ -17,6 +17,9 @@ class ClubCreate(PermissionRequiredMixin,CreateView):
   def get_success_url(self):
     return reverse('club_view', kwargs={'pk': self.object.id})
 
+class FormList(ListView):
+    model = FormItem
+
 class FormCreate(PermissionRequiredMixin,CreateView):
   model = FormItem
   permission_required = 'log.add_formitem'
@@ -36,8 +39,16 @@ class FormCreate(PermissionRequiredMixin,CreateView):
   def get_success_url(self):
     return reverse('club_list')
 
+class FormView(LoginRequiredMixin,DetailView):
+  model = FormItem
+
 class FormReply(PermissionRequiredMixin,UpdateView):
   model = FormItem
-  permission_required = 'log.change_formreply'
+  template_name = 'log/formitem_form.html'
+  permission_required = 'log.change_formitem'
+  fields = ['Yes_or_No_od','Yes_or_No_ot','Yes_or_No_nd','Yes_or_No_nt','Yes_or_No_final','note']
+  
+  def get_success_url(self):
+    return reverse('form_list')
 
   
