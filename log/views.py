@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import *
 from django.urls import reverse
-from .models import FormItem,ClubItem
+from .models import TransferForm,ClubItem
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
 class ClubList(ListView):
@@ -18,12 +18,12 @@ class ClubCreate(PermissionRequiredMixin,CreateView):
     return reverse('club_view', kwargs={'pk': self.object.id})
 
 class FormList(ListView):
-    model = FormItem
+    model = TransferForm
 
 class FormCreate(PermissionRequiredMixin,CreateView):
-  model = FormItem
-  permission_required = 'log.add_formitem'
-  fields = ['stu_name', 'stu_grade', 'stu_class', 'stu_num','ori_club','new_club','note']
+  model = TransferForm
+  permission_required = 'log.add_transferform'
+  fields = '__all__'
 
   def get_initial(self):
     data = {}
@@ -40,14 +40,23 @@ class FormCreate(PermissionRequiredMixin,CreateView):
     return reverse('club_list')
 
 class FormView(LoginRequiredMixin,DetailView):
-  model = FormItem
+  model = TransferForm
 
-class FormReply(PermissionRequiredMixin,UpdateView):
-  model = FormItem
-  template_name = 'log/formitem_form.html'
-  permission_required = 'log.change_formitem'
-  fields = ['Yes_or_No_od','Yes_or_No_ot','Yes_or_No_nd','Yes_or_No_nt','Yes_or_No_final','note']
-  
+class FormReply(LoginRequiredMixin,UpdateView):
+  model = TransferForm
+  permission_required = 'log.add_clubitem'
+  template_name = 'log/transferform_form.html'
+  fields = ['approve_od','approve_oa','approve_nd','approve_na','approve_st','note_od','note_oa']
+  def get_initial(self):
+    data = {}
+    # 取得目前登入的使用者資訊
+    u = self.request.user
+    # 如果有名字，就填名字，否則就填帳號名稱
+    if u.username:
+      data['stu_name'] = u.username
+    else:
+      data['stu_name'] = u.first_name
+    return data
   def get_success_url(self):
     return reverse('form_list')
 

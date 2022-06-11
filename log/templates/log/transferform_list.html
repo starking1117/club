@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>申請人</th>
+      <th>申請時間</th>
+      <th>原社團</th>
+      <th>新社團</th>
+      <th>原社長是否同意</th>
+      <th>原指導老師是否同意</th>
+      <th>新社長是否同意</th>
+      <th>新指導老師是否同意</th>
+      <th>是否通過轉社</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in formitem_list %}
+    <tr>
+      <td>
+      <a href="{{ item.id }}">{{ item.user }}</a>
+      </td>
+      <td>{{ item.date_created }}</td>
+      <td>{{ item.club_orig }}</td>
+      <td>{{ item.club_new }}</td>
+      <td>{{ item.get_approve_od_display }}</td>
+      <td>{{ item.get_approve_oa_display }}</td>
+      <td>{{ item.get_approve_nd_display }}</td>
+      <td>{{ item.get_approve_na_display }}</td>
+      <td>{{ item.get_approve_st_display }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

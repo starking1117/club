@@ -28,13 +28,13 @@
           <i class="fas fa-edit"></i> 欲轉社申請列表
         </a>
         </li>
-        {% elif perms.log.add_formitem %}
+        {% elif perms.log.add_transferform %}
         <li class="nav-item">
         <a href="{% url 'form_create' %}" class="nav-link">
           <i class="fas fa-edit"></i> 我要轉社
         </a>
         </li>
-        {% elif perms.log.change_formitem %}
+        {% elif perms.log.change_transferform %}
         <li class="nav-item">
         <a href="{% url 'form_list' %}" class="nav-link">
           <i class="fas fa-edit"></i> 欲轉社申請列表

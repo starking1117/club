@@ -1,88 +1,30 @@
 from django.db import models
-
-class FormItem(models.Model):
-    GRADE_OPTIONS = [
-    (0, '高一'),
-    (1, '高二'),
-    ]
-    CLASS_OPTIONS = [
-    (0, '1'),
-    (1, '2'),
-    (2, '3'),
-    (3, '4'),
-    (4, '5'),
-    (5, '6'),
-    (6, '7'),
-    (7, '8'),
-    (8, '9'),
-    (9, '10'),
-    ] 
-    CLUB_OPTIONS = [
-    (0, '資訊社'), 
-    (1, '籃球社'), 
-    (2, '羽球社'),
-    (3, '桌遊社'),
-    (4, '吉他社'),
-    ]
-    Y_or_N_OPTIONS = [
-    (0, '未答覆'), 
-    (1, '同意'),
-    (2, '不同意'), 
-    ]
-    stu_name = models.CharField('學生姓名', max_length=8,default='')
-    stu_grade = models.IntegerField(
-            '年級', 
-            default=0, 
-            choices=GRADE_OPTIONS
-           )
-    #學生班級
-    stu_class = models.IntegerField(
-            '學生班級', 
-            default=0, 
-            choices=CLASS_OPTIONS
-           )
-    stu_num = models.CharField('座號', max_length=8,default='')
-    ori_club = models.IntegerField(
-            '原社團', 
-            default=0, 
-            choices=CLUB_OPTIONS 
-    )
-    new_club = models.IntegerField(
-            '欲轉社社團', 
-            default=0, 
-            choices=CLUB_OPTIONS 
-    )
-    Yes_or_No_od = models.IntegerField(
-            '原社團社長', 
-            default=0, 
-            choices=Y_or_N_OPTIONS
-           )
-    Yes_or_No_ot = models.IntegerField(
-            '原社團指導老師', 
-            default=0, 
-            choices=Y_or_N_OPTIONS
-           )
-    Yes_or_No_nd = models.IntegerField(
-            '新社團社長', 
-            default=0, 
-            choices=Y_or_N_OPTIONS
-           )
-    Yes_or_No_nt = models.IntegerField(
-            '新社團指導老師', 
-            default=0, 
-            choices=Y_or_N_OPTIONS
-           )
-    Yes_or_No_final = models.IntegerField(
-            '教務處審核', 
-            default=0, 
-            choices=Y_or_N_OPTIONS
-           )
-    note = models.CharField('備註',max_length=255,null= True,blank= True)
-
+from django.contrib.auth.models import User
 
 class ClubItem(models.Model):
-    club_name = models.CharField('社團名稱',max_length=8,default='')
-    director = models.CharField('社團社長', max_length=8,default='')
-    teacher = models.CharField('指導老師', max_length=8,default='')
+    club_name = models.CharField('社團名稱',max_length=64,default='')
+    director = models.ForeignKey(User, models.CASCADE,related_name='direct_club',name='社長')
+    advisor = models.ForeignKey(User, models.CASCADE,related_name='tutor_club',name='指導老師')
     now_num = models.CharField('目前人數',max_length=8,default='')
     max_num = models.CharField('上限人數',max_length=8,default='')
+    def __str__(self):
+        return self.club_name
+
+class TransferForm(models.Model):
+    APPROVE_OPTIONS = [
+        (0, '未答覆'), 
+        (1, '同意'),
+        (2, '不同意'), 
+    ]
+    user = models.ForeignKey(User, models.CASCADE,name='申請人',related_name='form_list')
+    date_created = models.DateField('申請時間',auto_now_add=True)
+    club_orig = models.ForeignKey(ClubItem, models.CASCADE,name='原社團', related_name='out_form')
+    club_new = models.ForeignKey(ClubItem, models.CASCADE,name='新社團', related_name='in_form')
+    approve_od = models.IntegerField('原社團社長審核', choices=APPROVE_OPTIONS, default=0)
+    approve_oa = models.IntegerField('原社團指導老師審核', choices=APPROVE_OPTIONS, default=0)
+    approve_nd = models.IntegerField('新社團社長審核', choices=APPROVE_OPTIONS, default=0)
+    approve_na = models.IntegerField('新社團指導老師審核', choices=APPROVE_OPTIONS, default=0)
+    approve_st = models.IntegerField('行政單位審核', choices=APPROVE_OPTIONS, default=0)
+    note_stu = models.CharField('學生備註',max_length=255,null=True,blank=True)
+    note_od = models.CharField('社長備註',max_length=255,null=True,blank=True)
+    note_oa = models.CharField('指導老師備註',max_length=255,null=True,blank=True)
