@@ -1,8 +1,11 @@
+from re import U
+from urllib import request
 from django.shortcuts import render
 from django.views.generic import *
 from django.urls import reverse
 from .models import TransferForm,ClubItem
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.contrib.auth.models import User
 
 class ClubList(ListView):
     model = ClubItem
@@ -24,17 +27,17 @@ class FormCreate(PermissionRequiredMixin,CreateView):
   model = TransferForm
   permission_required = 'log.add_transferform'
   fields = '__all__'
+  def get_form(self):
+    form = super().get_form()
+    # 把不要顯示的欄位從表單裡拿掉
+    unwant_fields = [ 'user','approve_od', 'approve_oa', 'approve_nd', 'approve_na', 'approve_st', 'note_od', 'note_oa']
+    for field in unwant_fields:
+      del form.fields[field]
+    return form
 
-  def get_initial(self):
-    data = {}
-    # 取得目前登入的使用者資訊
-    u = self.request.user
-    # 如果有名字，就填名字，否則就填帳號名稱
-    if u.username:
-      data['stu_name'] = u.username
-    else:
-      data['stu_name'] = u.first_name
-    return data
+  def form_valid(self, form):
+    form.instance.user = User.objects.get(id=self.request.user.id)
+    return super().form_valid(form)
 
   def get_success_url(self):
     return reverse('club_list')
@@ -44,20 +47,20 @@ class FormView(LoginRequiredMixin,DetailView):
 
 class FormReply(LoginRequiredMixin,UpdateView):
   model = TransferForm
-  permission_required = 'log.add_clubitem'
+  permission_required = 'log.change_transferform'
   template_name = 'log/transferform_form.html'
-  fields = ['approve_od','approve_oa','approve_nd','approve_na','approve_st','note_od','note_oa']
+  fields = '__all__'
   def get_initial(self):
-    data = {}
-    # 取得目前登入的使用者資訊
-    u = self.request.user
-    # 如果有名字，就填名字，否則就填帳號名稱
-    if u.username:
-      data['stu_name'] = u.username
-    else:
-      data['stu_name'] = u.first_name
-    return data
+    if TransferForm.approve_od == 0 :
+      form = super().get_form()
+      unwant_fields = [ 'user','approve_od', 'approve_oa', 'approve_nd', 'approve_na', 'approve_st', 'note_od', 'note_oa']
+      for field in unwant_fields:
+        del form.fields[field]
+      return form
+
+
+
   def get_success_url(self):
-    return reverse('form_list')
+   return reverse('form_list')
 
   

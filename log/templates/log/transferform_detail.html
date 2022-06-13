@@ -4,23 +4,23 @@
 <div class="card">
   <div class="card-header">
     <div class="card-text d-flex justify-content-between">
-    <div class="h3">{{ formitem.get_ori_club_display }}</div>
-    <small><a href="{% url 'form_reply' formitem.id %}" class="btn btn-primary">回覆</a></small>
+    <div class="h3">{{ transferform.club_orig }}</div>
+    <small><a href="{% url 'form_reply' transferform.id %}" class="btn btn-primary">回覆</a></small>
     </div>
   </div>
   <div class="card-body">
     <div class="card-text">
-      <div>原社團社長：{{ formitem.get_Yes_or_No_od_display }}<br>舊指導老師：{{ formitem.get_Yes_or_No_ot_display }}</div>
+      <div>原社團社長：{{ transferform.get_approve_od_display }}<br>舊指導老師：{{ transferform.get_approve_oa_display }}</div>
     </div>
   </div>
 </div>
 <div class="card">
   <div class="card-header">
-    <div class="h3">{{ formitem.get_new_club_display }}</div>
+    <div class="h3">{{ transferform.club_new }}</div>
   </div>
   <div class="card-body">
     <div class="card-text">
-      <div>新社團社長：{{ formitem.get_Yes_or_No_nd_display }}<br>新指導老師：{{ formitem.get_Yes_or_No_nt_display }}</div>
+      <div>新社團社長：{{ transferform.get_approve_nd_display }}<br>新指導老師：{{ transferform.get_approve_na_display }}</div>
     </div>
 </div>
 {% endblock %}
