@@ -28,3 +28,7 @@ class TransferForm(models.Model):
     note_stu = models.CharField('學生備註',max_length=255,null=True,blank=True)
     note_od = models.CharField('社長備註',max_length=255,null=True,blank=True)
     note_oa = models.CharField('指導老師備註',max_length=255,null=True,blank=True)
+
+#class Profile(models.Model):
+#    user = models.OneToOneField(User, models.CASCADE, verbose_name='使用者')
+#    club = models.ForeignKey(ClubItem, models.SET_NULL, verbose_name='參加社團', related_name='members', null=True)
